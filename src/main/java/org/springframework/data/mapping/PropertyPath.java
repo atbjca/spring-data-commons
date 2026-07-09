@@ -411,7 +411,7 @@ public class PropertyPath implements Streamable<PropertyPath> {
 	 * @return
 	 */
 	private static PropertyPath create(String source, TypeInformation<?> type, List<PropertyPath> base) {
-		return create(source, type, "", base);
+		return create(source, type, "", base, 0);
 	}
 
 	/**
@@ -424,9 +424,13 @@ public class PropertyPath implements Streamable<PropertyPath> {
 	 * @param addTail
 	 * @return
 	 */
-	private static PropertyPath create(String source, TypeInformation<?> type, String addTail, List<PropertyPath> base) {
+	private static PropertyPath create(String source, TypeInformation<?> type, String addTail, List<PropertyPath> base,
+			int depth) {
 
-		if (base.size() > 1000) {
+		// CVE-2026-41711：camel-case 边界右移递归（见下方 create(head, ...) 调用）不会增加
+		// base 路径段计数，因而绕过 base.size() 防护。此处以 depth 计数器限制该递归深度，
+		// 超过 1000 时以受控异常拒绝，防止超长 camelCase 属性名触发 StackOverflowError（DoS）。
+		if (base.size() > 1000 || depth > 1000) {
 			throw new IllegalArgumentException(PARSE_DEPTH_EXCEEDED);
 		}
 
@@ -468,7 +472,7 @@ public class PropertyPath implements Streamable<PropertyPath> {
 			String tail = source.substring(position);
 
 			try {
-				return create(head, type, tail + addTail, base);
+				return create(head, type, tail + addTail, base, depth + 1);
 			} catch (PropertyReferenceException e) {
 				throw e.hasDeeperResolutionDepthThan(exception) ? e : exception;
 			}

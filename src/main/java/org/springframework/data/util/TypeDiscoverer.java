@@ -186,7 +186,23 @@ class TypeDiscoverer<S> implements TypeInformation<S> {
 		int separatorIndex = fieldname.indexOf('.');
 
 		if (separatorIndex == -1) {
-			return fieldTypes.computeIfAbsent(fieldname, this::getPropertyInformation).orElse(null);
+
+			// CVE-2026-41716：仅缓存真实存在的属性，不缓存解析失败的名称（负结果）。
+			// 原实现用 computeIfAbsent 会把每个查询过的名称（含不存在的）永久驻留，
+			// 攻击者可用大量伪造 property 名使缓存无界增长耗尽堆内存导致拒绝服务（DoS）。
+			Optional<TypeInformation<?>> cached = fieldTypes.get(fieldname);
+
+			if (cached != null) {
+				return cached.orElse(null);
+			}
+
+			Optional<TypeInformation<?>> result = getPropertyInformation(fieldname);
+
+			if (result.isPresent()) {
+				fieldTypes.put(fieldname, result);
+			}
+
+			return result.orElse(null);
 		}
 
 		String head = fieldname.substring(0, separatorIndex);

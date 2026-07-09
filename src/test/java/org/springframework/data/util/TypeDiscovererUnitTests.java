@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.data.util.ClassTypeInformation.from;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Collection;
@@ -219,6 +220,26 @@ public class TypeDiscovererUnitTests {
 		TypeInformation<io.vavr.collection.List> type = from(io.vavr.collection.List.class);
 
 		assertThat(type.isCollectionLike()).isTrue();
+	}
+
+	@Test // CVE-2026-41716
+	@SuppressWarnings("unchecked")
+	void doesNotCacheUnresolvedPropertyNames() throws Exception {
+
+		TypeDiscoverer<Person> discoverer = new TypeDiscoverer<>(Person.class, EMPTY_MAP);
+
+		// 模拟攻击者持续提交大量伪造的 property 名（每个都不存在）
+		for (int i = 0; i < 1000; i++) {
+			discoverer.getProperty("nonExistentProperty" + i);
+		}
+
+		// 反射读取内部属性缓存：未解析成功的 property 名不得进入缓存，
+		// 否则无界增长将耗尽堆内存导致拒绝服务（CVE-2026-41716 DoS）。
+		Field field = TypeDiscoverer.class.getDeclaredField("fieldTypes");
+		field.setAccessible(true);
+		Map<String, ?> cache = (Map<String, ?>) field.get(discoverer);
+
+		assertThat(cache).isEmpty();
 	}
 
 	class Person {

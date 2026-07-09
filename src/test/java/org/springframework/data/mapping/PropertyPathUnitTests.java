@@ -392,6 +392,24 @@ class PropertyPathUnitTests {
 				.isThrownBy(() -> PropertyPath.from(path, Left.class));
 	}
 
+	@Test // CVE-2026-41711
+	void rejectsTooDeepCamelCaseRecursion() {
+
+		// 构造超长单段 camelCase 属性名（无点号分隔符），触发 create() 方法在
+		// camel-case 边界右移的递归。该递归不增加路径段计数（base 不变），绕过
+		// DATACMNS-1285 的 base.size()>1000 防护，未修复时导致 StackOverflowError（CVE-2026-41711 DoS）。
+		StringBuilder source = new StringBuilder();
+		for (int i = 0; i < 50000; i++) {
+			source.append("Ab");
+		}
+
+		final String path = source.toString();
+
+		// 修复后必须以受控的 IllegalArgumentException 拒绝，而非 StackOverflowError
+		assertThatIllegalArgumentException() //
+				.isThrownBy(() -> PropertyPath.from(path, Left.class));
+	}
+
 	@Test // DATACMNS-1304
 	void resolvesPropertyPathWithSingleUppercaseLetterPropertyEnding() {
 		assertThat(from("categoryB", Product.class).toDotPath()).isEqualTo("categoryB");

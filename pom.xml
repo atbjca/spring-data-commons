@@ -3,16 +3,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.data</groupId>
-	<artifactId>spring-data-commons</artifactId>
-	<version>2.7.19-SNAPSHOT</version>
+	<groupId>cn.bjca.footstone.bpring.data</groupId>
+	<artifactId>bjca-footstone-bpring-data-commons</artifactId>
+	<version>2.7.18-nes.patch.1-SNAPSHOT</version>
 
 	<name>Spring Data Core</name>
 
 	<parent>
 		<groupId>org.springframework.data.build</groupId>
 		<artifactId>spring-data-parent</artifactId>
-		<version>2.7.19-SNAPSHOT</version>
+		<version>2.7.18</version>
 	</parent>
 
 	<properties>
@@ -398,6 +398,20 @@
 
 		</plugins>
 	</build>
+
+	<!-- NES fork：发布到内网 Nexus 私服。URL 由 ~/.m2/settings.xml 的 profile 属性提供，隔离外网。 -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>${nexusReleaseUrl}</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>${nexusSnapshotUrl}</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>

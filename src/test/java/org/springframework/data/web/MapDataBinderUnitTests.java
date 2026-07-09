@@ -119,6 +119,19 @@ class MapDataBinderUnitTests {
 				.withCauseInstanceOf(SpelEvaluationException.class);
 	}
 
+	@Test // CVE-2026-41721
+	void rejectsCollectionIndexExceedingAutoGrowLimit() {
+
+		ConfigurablePropertyAccessor accessor = new MapDataBinder(Bar.class, new DefaultFormattingConversionService())
+				.getPropertyAccessor();
+
+		// 集合索引 1000 超过 SpEL 自动增长上限（maximumAutoGrowSize=256），
+		// 必须被受控异常拦截，而非无限增长集合导致内存耗尽（CVE-2026-41721 DoS）
+		assertThatExceptionOfType(NotWritablePropertyException.class) //
+				.isThrownBy(() -> accessor.setPropertyValue("fooBar[1000]", "value")) //
+				.withCauseInstanceOf(SpelEvaluationException.class);
+	}
+
 	private static Map<String, Object> bind(PropertyValues values) {
 
 		MapDataBinder binder = new MapDataBinder(Root.class, new DefaultFormattingConversionService());

@@ -110,8 +110,11 @@ class MapDataBinder extends WebDataBinder {
 	 */
 	private static class MapPropertyAccessor extends AbstractPropertyAccessor {
 
+		// CVE-2026-41721：为 SpEL 集合自动增长设置上限 256，防止攻击者通过超大集合索引
+		// （如 fooBar[100000]）触发无界内存分配导致拒绝服务（DoS）。
+		// 第三个参数 maximumAutoGrowSize 自 Spring 4.1 起支持，兼容 Java 8。
 		private static final SpelExpressionParser PARSER = new SpelExpressionParser(
-				new SpelParserConfiguration(false, true));
+				new SpelParserConfiguration(false, true, 256));
 
 		private final Class<?> type;
 		private final Map<String, Object> map;
