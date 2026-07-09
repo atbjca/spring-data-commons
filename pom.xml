@@ -3,9 +3,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.data</groupId>
-	<artifactId>spring-data-commons</artifactId>
-	<version>3.5.14-SNAPSHOT</version>
+	<groupId>cn.bjca.footstone.bpring.data</groupId>
+	<artifactId>bjca-footstone-bpring-data-commons</artifactId>
+	<version>3.5.13-nes.patch.1-SNAPSHOT</version>
 
 	<name>Spring Data Core</name>
 	<description>Core Spring concepts underpinning every Spring Data module.</description>
@@ -24,7 +24,8 @@
 	<parent>
 		<groupId>org.springframework.data.build</groupId>
 		<artifactId>spring-data-parent</artifactId>
-		<version>3.5.14-SNAPSHOT</version>
+		<!-- NES fork：parent 采用方案 A（保留原坐标），版本由 3.5.14-SNAPSHOT 锁定为已发布正式版 3.5.13，保证私服/本地仓库可解析 -->
+		<version>3.5.13</version>
 	</parent>
 
 	<properties>
@@ -35,33 +36,46 @@
 		<kotlin.api.target>1.8</kotlin.api.target>
 	</properties>
 
+	<!-- NES fork：导入去特征化的 spring-framework fork BOM，统一管理 spring-* 依赖版本为 6.2.19-nes.patch.1 -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>cn.bjca.footstone.bpring</groupId>
+				<artifactId>bjca-footstone-bpring-framework-bom</artifactId>
+				<version>6.2.19-nes.patch.1-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-beans</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-context</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-expression</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-tx</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-oxm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -70,19 +84,19 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-web</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webflux</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-webflux</artifactId>
 			<optional>true</optional>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core-test</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-core-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -210,8 +224,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-webmvc</artifactId>
 			<optional>true</optional>
 		</dependency>
 
@@ -384,6 +398,20 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<!-- NES fork：构件发布至内网 Nexus 私服，URL 由 ~/.m2/settings.xml 的 bjca profile 提供 -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>${nexusReleaseUrl}</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>${nexusSnapshotUrl}</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>

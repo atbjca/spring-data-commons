@@ -19,3 +19,6 @@ node
 node_modules
 package-lock.json
 .mvn/.develocity
+
+# Claude Code 本地工具配置(不入库)
+.claude/
