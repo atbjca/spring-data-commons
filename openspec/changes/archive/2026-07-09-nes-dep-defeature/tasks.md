@@ -19,11 +19,11 @@
 
 ## 阶段 3：文档同步
 
-- [ ] 3.1 `doc/GAV_MAPPING.md` 增加「依赖坐标去特征化」映射节（含 framework BOM）
-- [ ] 3.2 `doc/REQUIREMENTS.md` §4 依赖概览更新为 fork BOM `5.3.39-nes.patch.1`
-- [ ] 3.3 `openspec/specs/gav-renaming/spec.md` 合入本变更新增 Requirement
+- [x] 3.1 `doc/GAV_MAPPING.md` 增加「依赖坐标去特征化」映射节（含 framework BOM）
+- [x] 3.2 `doc/REQUIREMENTS.md` §4 依赖概览更新为 fork BOM `5.3.39-nes.patch.1`
+- [x] 3.3 `openspec/specs/gav-renaming/spec.md` 合入本变更新增 Requirement
 
 ## 阶段 4：收尾
 
-- [ ] 4.1 `openspec validate nes-dep-defeature` 通过
-- [ ] 4.2 归档 change 到 `openspec/changes/archive/`
+- [x] 4.1 `openspec validate nes-dep-defeature` 通过
+- [x] 4.2 归档 change 到 `openspec/changes/archive/`
