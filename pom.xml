@@ -23,33 +23,47 @@
 
 	</properties>
 
+	<!-- 引入 NES fork 的 framework BOM，统一托管去特征化后的 Spring 组件版本（5.3.39-nes.patch.1-SNAPSHOT）。
+	     替代原先由父 POM 传递的官方 spring-framework-bom:5.3.31，消除官方坐标特征，避免 SCA 误报。 -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>cn.bjca.footstone.bpring</groupId>
+				<artifactId>bjca-footstone-bpring-framework-bom</artifactId>
+				<version>5.3.39-nes.patch.1-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-beans</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-context</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-expression</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-tx</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-oxm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -58,13 +72,13 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-web</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webflux</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-webflux</artifactId>
 			<optional>true</optional>
 		</dependency>
 
@@ -268,8 +282,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
+			<groupId>cn.bjca.footstone.bpring</groupId>
+			<artifactId>bjca-footstone-bpring-webmvc</artifactId>
 			<optional>true</optional>
 		</dependency>
 

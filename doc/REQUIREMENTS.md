@@ -38,14 +38,15 @@
 
 ## 4. 依赖概览
 
-本项目依赖由 parent `spring-data-parent:2.7.18` 统一管理，编译期关键依赖：
+本项目直接依赖的 Spring 组件已去特征化（坐标切换为 NES fork），版本由 fork 的 framework BOM 统一托管——`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:5.3.39-nes.patch.1-SNAPSHOT`（以 `import` 作用域置于本项目 `<dependencyManagement>`，覆盖 parent 传递的官方 `spring-framework-bom:5.3.31`）。编译期关键依赖：
 
-| 依赖 | 版本 | 说明 |
-|------|------|------|
-| spring-framework | 5.3.31 | 由 parent 管理（compile） |
-| spring-expression | 5.3.31 | SpEL，CVE-2026-41721 修复所用 `SpelParserConfiguration` 三参构造器所在 |
+| 依赖 | 坐标 | 版本 | 说明 |
+|------|------|------|------|
+| framework BOM | `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom` | 5.3.39-nes.patch.1-SNAPSHOT | 统一托管以下组件版本（import scope） |
+| spring-core（fork） | `cn.bjca.footstone.bpring:bjca-footstone-bpring-core` | 由 BOM 托管 | 核心工具（compile） |
+| spring-expression（fork） | `cn.bjca.footstone.bpring:bjca-footstone-bpring-expression` | 由 BOM 托管 | SpEL，CVE-2026-41721 修复所用 `SpelParserConfiguration` 三参构造器所在 |
 
-> 传递依赖 CVE 盘点不在本期范围，如需可另起 openspec change。
+> 直接依赖去特征化由独立变更 `nes-dep-defeature` 管理。传递依赖 CVE 盘点不在本期范围，如需可另起 openspec change。
 
 ## 5. 测试覆盖
 

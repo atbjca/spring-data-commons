@@ -20,6 +20,33 @@
 
 > Parent 仅在构建期解析，不体现在发布制品的 GAV 特征上，因此保留原坐标即可。
 
+## 直接依赖坐标去特征化
+
+发布 POM 的 `<dependencies>` 中，本项目直接依赖的 Spring 组件坐标同样去特征化，避免 SCA 工具扫描发布物料时命中官方 `org.springframework` 特征。版本由 NES fork 的 framework BOM 统一托管（替代 parent 传递的官方 `spring-framework-bom:5.3.31`）。
+
+| 依赖组件 | 官方原坐标 | NES fork 新坐标 |
+|---------|-----------|----------------|
+| core | `org.springframework:spring-core` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-core` |
+| beans | `org.springframework:spring-beans` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-beans` |
+| context | `org.springframework:spring-context` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-context` |
+| expression | `org.springframework:spring-expression` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-expression` |
+| tx | `org.springframework:spring-tx` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-tx` |
+| oxm | `org.springframework:spring-oxm` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-oxm` |
+| web | `org.springframework:spring-web` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-web` |
+| webflux | `org.springframework:spring-webflux` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-webflux` |
+| webmvc | `org.springframework:spring-webmvc` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-webmvc` |
+
+**版本托管 BOM：**
+
+| 坐标 | 值 |
+|------|-----|
+| **groupId** | `cn.bjca.footstone.bpring` |
+| **artifactId** | `bjca-footstone-bpring-framework-bom` |
+| **version** | `5.3.39-nes.patch.1-SNAPSHOT`（去特征化后的 Spring Framework 5.3.39 基线） |
+| **scope** | `import`（置于本项目 `<dependencyManagement>`，覆盖 parent 传递的官方 `5.3.31`） |
+
+> 该项去特征化由独立变更 `nes-dep-defeature` 管理，详见 `openspec/changes/`。
+
 ## 保持不变的项
 
 | 项 | 值 | 原因 |
