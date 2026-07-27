@@ -18,35 +18,53 @@ This project is governed by the https://github.com/spring-projects/.github/blob/
 
 == Getting Started
 
-=== Maven configuration
+=== NES RELEASE
 
-Add the Maven dependency:
-
-[source,xml]
-----
-<dependency>
-  <groupId>org.springframework.data</groupId>
-  <artifactId>spring-data-commons</artifactId>
-  <version>${version}</version>
-</dependency>
-----
-
-If you'd rather like the latest snapshots of the upcoming major version, use our Maven snapshot repository and declare the appropriate dependency version.
+The BJCA-maintained NES release is available from the internal Nexus RELEASE
+repository:
 
 [source,xml]
 ----
-<dependency>
-  <groupId>org.springframework.data</groupId>
-  <artifactId>spring-data-commons</artifactId>
-  <version>${version}-SNAPSHOT</version>
-</dependency>
-
 <repository>
-  <id>spring-libs-snapshot</id>
-  <name>Spring Snapshot Repository</name>
-  <url>https://repo.spring.io/libs-snapshot</url>
+  <id>releases</id>
+  <url>http://192.168.131.36:8088/repository/releases</url>
 </repository>
 ----
+
+Add the RELEASE dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>cn.bjca.footstone.bpring.data</groupId>
+  <artifactId>bjca-footstone-bpring-data-commons</artifactId>
+  <version>2.7.18-nes.patch.1</version>
+</dependency>
+----
+
+This artifact requires the published Spring Framework NES release
+`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:5.3.39-nes.patch.1`.
+Its Java packages and JPMS automatic module name remain `org.springframework.data.*`
+and `spring.data.commons`; the bytecode target remains Java 8. There are no
+release exclusions.
+
+=== Release validation
+
+The release reuses the committed development validation of 3328 passing tests
+and the later full regression against the NES Framework dependency. The
+release-only diff must contain no production or test source changes. Before a
+single coordinator-controlled deploy, run the local publication gate:
+
+[source,bash]
+----
+make install
+----
+
+Then verify every generated POM has no internal `cn.bjca.footstone`
+`-SNAPSHOT` dependency and run a RELEASE-only consumer check. `make deploy`
+is reserved for the coordinating release session after Nexus absence is
+confirmed. See link:doc/QUICK_START.md[Quick Start] and
+link:doc/GAV_MAPPING.md[GAV Mapping] for the complete release coordinates.
 
 == Getting Help
 

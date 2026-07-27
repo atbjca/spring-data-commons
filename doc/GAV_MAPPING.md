@@ -8,7 +8,7 @@
 |------|---------|--------------|
 | **groupId** | `org.springframework.data` | `cn.bjca.footstone.bpring.data` |
 | **artifactId** | `spring-data-commons` | `bjca-footstone-bpring-data-commons` |
-| **version** | `2.7.19-SNAPSHOT` | `2.7.18-nes.patch.1-SNAPSHOT` |
+| **version** | `2.7.19-SNAPSHOT` | `2.7.18-nes.patch.1` |
 
 ## Parent 坐标
 
@@ -42,10 +42,25 @@
 |------|-----|
 | **groupId** | `cn.bjca.footstone.bpring` |
 | **artifactId** | `bjca-footstone-bpring-framework-bom` |
-| **version** | `5.3.39-nes.patch.1-SNAPSHOT`（去特征化后的 Spring Framework 5.3.39 基线） |
+| **version** | `5.3.39-nes.patch.1`（已发布并通过 Nexus 验证的 Spring Framework 5.3.39 NES RELEASE） |
 | **scope** | `import`（置于本项目 `<dependencyManagement>`，覆盖 parent 传递的官方 `5.3.31`） |
 
-> 该项去特征化由独立变更 `nes-dep-defeature` 管理，详见 `openspec/changes/`。
+> 该项去特征化由独立变更 `nes-dep-defeature` 管理。当前 RELEASE 不包含任何内部
+> SNAPSHOT 依赖。
+
+## RELEASE publication
+
+| 项 | 值 |
+|----|----|
+| Nexus RELEASE | `http://192.168.131.36:8088/repository/releases` |
+| 主 GAV | `cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:2.7.18-nes.patch.1` |
+| Packaging | `jar` |
+| 预期附属资产 | POM、主 JAR、sources JAR；最终完整集以 `make install` 结果为准 |
+| 发布排除项 | 无 |
+
+正式部署前必须串行执行 `make install`，扫描所有生成 POM 中的内部 SNAPSHOT，并用
+仅启用 RELEASE 仓库的 consumer 验证坐标。`make deploy` 仅由协调主会话在 Nexus
+目标版本完全不存在时执行一次。
 
 ## 保持不变的项
 
@@ -71,6 +86,6 @@
 <dependency>
     <groupId>cn.bjca.footstone.bpring.data</groupId>
     <artifactId>bjca-footstone-bpring-data-commons</artifactId>
-    <version>2.7.18-nes.patch.1-SNAPSHOT</version>
+    <version>2.7.18-nes.patch.1</version>
 </dependency>
 ```

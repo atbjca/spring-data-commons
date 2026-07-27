@@ -5,7 +5,7 @@
 
 	<groupId>cn.bjca.footstone.bpring.data</groupId>
 	<artifactId>bjca-footstone-bpring-data-commons</artifactId>
-	<version>2.7.18-nes.patch.1-SNAPSHOT</version>
+	<version>2.7.18-nes.patch.1</version>
 
 	<name>Spring Data Core</name>
 
@@ -23,14 +23,14 @@
 
 	</properties>
 
-	<!-- 引入 NES fork 的 framework BOM，统一托管去特征化后的 Spring 组件版本（5.3.39-nes.patch.1-SNAPSHOT）。
+	<!-- 引入 NES fork 的 framework BOM，统一托管去特征化后的 Spring 组件版本（5.3.39-nes.patch.1）。
 	     替代原先由父 POM 传递的官方 spring-framework-bom:5.3.31，消除官方坐标特征，避免 SCA 误报。 -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>cn.bjca.footstone.bpring</groupId>
 				<artifactId>bjca-footstone-bpring-framework-bom</artifactId>
-				<version>5.3.39-nes.patch.1-SNAPSHOT</version>
+				<version>5.3.39-nes.patch.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

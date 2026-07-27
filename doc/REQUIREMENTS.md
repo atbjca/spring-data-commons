@@ -5,7 +5,7 @@
 | 项 | 值 |
 |----|-----|
 | 基线版本 | Spring Data Commons 2.7.18（官方正式版） |
-| 制品版本 | 2.7.18-nes.patch.1-SNAPSHOT |
+| 制品版本 | 2.7.18-nes.patch.1 |
 | Parent | `org.springframework.data.build:spring-data-parent:2.7.18` |
 | 构建工具 | Maven（`mvnw` 3.9.5） |
 | 编译目标 | Java 8（字节码 major version 52） |
@@ -24,6 +24,7 @@
 | R7 | CVE 文档体系（VULNERABILITY_REPORT + 每 CVE 独立文档） | ✅ 完成 |
 | R8 | 交付文档（用户手册、快速入门、GAV 映射、需求清单） | ✅ 完成 |
 | R9 | Makefile 构建快捷命令 | ✅ 完成 |
+| R10 | RELEASE 版本及内部 RELEASE 依赖准备 | ✅ 完成 |
 
 ## 3. 约束
 
@@ -38,11 +39,11 @@
 
 ## 4. 依赖概览
 
-本项目直接依赖的 Spring 组件已去特征化（坐标切换为 NES fork），版本由 fork 的 framework BOM 统一托管——`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:5.3.39-nes.patch.1-SNAPSHOT`（以 `import` 作用域置于本项目 `<dependencyManagement>`，覆盖 parent 传递的官方 `spring-framework-bom:5.3.31`）。编译期关键依赖：
+本项目直接依赖的 Spring 组件已去特征化（坐标切换为 NES fork），版本由 fork 的 framework BOM 统一托管——`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:5.3.39-nes.patch.1`（以 `import` 作用域置于本项目 `<dependencyManagement>`，覆盖 parent 传递的官方 `spring-framework-bom:5.3.31`）。编译期关键依赖：
 
 | 依赖 | 坐标 | 版本 | 说明 |
 |------|------|------|------|
-| framework BOM | `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom` | 5.3.39-nes.patch.1-SNAPSHOT | 统一托管以下组件版本（import scope） |
+| framework BOM | `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom` | 5.3.39-nes.patch.1 | 统一托管以下组件版本（import scope） |
 | spring-core（fork） | `cn.bjca.footstone.bpring:bjca-footstone-bpring-core` | 由 BOM 托管 | 核心工具（compile） |
 | spring-expression（fork） | `cn.bjca.footstone.bpring:bjca-footstone-bpring-expression` | 由 BOM 托管 | SpEL，CVE-2026-41721 修复所用 `SpelParserConfiguration` 三参构造器所在 |
 

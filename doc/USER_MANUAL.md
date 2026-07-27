@@ -14,7 +14,7 @@
 
 | 维度 | 官方 2.7.18 | 本 NES fork |
 |------|------------|-------------|
-| GAV | `org.springframework.data:spring-data-commons:2.7.18` | `cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:2.7.18-nes.patch.1-SNAPSHOT` |
+| GAV | `org.springframework.data:spring-data-commons:2.7.18` | `cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:2.7.18-nes.patch.1` |
 | CVE-2026-41721 | 未修复（EOL） | ✅ 已修复 |
 | CVE-2026-41716 | 未修复（EOL） | ✅ 已修复 |
 | CVE-2026-41711 | 未修复（EOL） | ✅ 已修复 |
@@ -39,18 +39,47 @@
 
 超长 camelCase 属性名触发 `PropertyPath` 递归栈溢出（绕过旧的点分深度防护）。修复：为 camel-case 递归增加深度上限 1000。正常属性路径不受影响。
 
-## 4. 构建与发布
+## 4. RELEASE 依赖与发布
 
-参见 [快速入门](QUICK_START.md)。常用命令：
+发布坐标：
 
-```bash
-make build      # 编译打包
-make test       # 运行测试
-make install    # 安装到本地仓库
-make deploy     # 发布到 Nexus 私服
+```xml
+<dependency>
+    <groupId>cn.bjca.footstone.bpring.data</groupId>
+    <artifactId>bjca-footstone-bpring-data-commons</artifactId>
+    <version>2.7.18-nes.patch.1</version>
+</dependency>
 ```
 
-## 5. 私服配置
+Nexus RELEASE 地址：`http://192.168.131.36:8088/repository/releases`。
+
+内部依赖由已发布的
+`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:5.3.39-nes.patch.1`
+统一托管。直接引用的 core、beans、context、expression、tx、oxm、web、webflux
+和 webmvc 均必须解析为同一 RELEASE 版本，不允许内部 SNAPSHOT。
+
+本组件无发布排除项。其父 POM 仍为公开 RELEASE
+`org.springframework.data.build:spring-data-parent:2.7.18`；Java 包名、自动模块名和
+Java 8 字节码兼容性保持不变。
+
+## 5. RELEASE 验证流程
+
+既有开发证据包含全量 `3328` tests 通过，以及切换 NES Framework 依赖后的全量
+回归通过。若 release-only diff 仅含版本、内部 RELEASE 依赖、文档和 OpenSpec，
+且没有生产/测试源码变化，则本次发布获准不重复执行 `make build` / `make test`。
+
+部署前仍必须由协调主会话串行执行本地安装：
+
+```bash
+make install
+```
+
+随后核对 POM、主 JAR、sources JAR 等实际 publication 资产，扫描全部 POM 的内部
+SNAPSHOT 引用，并运行 RELEASE-only consumer。仅当所有目标资产在 Nexus RELEASE
+中均不存在时，协调主会话才可执行一次 `make deploy`。已存在或部分存在的 RELEASE
+不得覆盖或重发。
+
+## 6. 私服配置
 
 `pom.xml` 的 `<distributionManagement>` 使用属性占位：
 
