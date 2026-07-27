@@ -12,6 +12,27 @@ Our primary goals are:
 * Possibility to integrate custom repository code
 * Easy Spring integration with custom namespace
 
+== NES RELEASE
+
+This branch prepares the immutable NES RELEASE
+`cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:3.5.13-nes.patch.1`.
+It imports the Nexus-verified RELEASE BOM
+`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:6.2.19-nes.patch.1`.
+There are no approved publication exclusions.
+
+The target repository is the internal Nexus RELEASE repository at
+`http://192.168.131.36:8088/repository/releases`. Before deployment, the
+coordinating session must run the local install serially, enumerate the actual
+publication set, scan every generated POM for internal SNAPSHOT references,
+and run a representative consumer check. Nexus absence must then be checked
+immediately before the single deployment.
+
+The operator approved reusing the development build and test results because
+the RELEASE diff contains only version metadata, documentation, and OpenSpec
+evidence. `make build` and `make test` are therefore not repeated for this
+release. Local installation, generated-POM scanning, and consumer validation
+remain mandatory.
+
 == Code of Conduct
 
 This project is governed by the https://github.com/spring-projects/.github/blob/e3cc2ff230d8f1dca06535aa6b5a4a23815861d4/CODE_OF_CONDUCT.md[Spring Code of Conduct]. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to spring-code-of-conduct@pivotal.io.
@@ -25,28 +46,15 @@ Add the Maven dependency:
 [source,xml]
 ----
 <dependency>
-  <groupId>org.springframework.data</groupId>
-  <artifactId>spring-data-commons</artifactId>
-  <version>${version}</version>
+  <groupId>cn.bjca.footstone.bpring.data</groupId>
+  <artifactId>bjca-footstone-bpring-data-commons</artifactId>
+  <version>3.5.13-nes.patch.1</version>
 </dependency>
 ----
 
-If you'd rather like the latest snapshots of the upcoming major version, use our Maven snapshot repository and declare the appropriate dependency version.
-
-[source,xml]
-----
-<dependency>
-  <groupId>org.springframework.data</groupId>
-  <artifactId>spring-data-commons</artifactId>
-  <version>${version}-SNAPSHOT</version>
-</dependency>
-
-<repository>
-  <id>spring-snapshot</id>
-  <name>Spring Snapshot Repository</name>
-  <url>https://repo.spring.io/snapshot</url>
-</repository>
-----
+Consumer Maven settings must resolve this coordinate and the Framework
+`6.2.19-nes.patch.1` RELEASE graph from the internal repository. Java package
+names remain `org.springframework.data.*`.
 
 == Getting Help
 

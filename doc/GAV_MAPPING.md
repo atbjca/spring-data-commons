@@ -8,7 +8,7 @@
 |------|---------|--------------|
 | **groupId** | `org.springframework.data` | `cn.bjca.footstone.bpring.data` |
 | **artifactId** | `spring-data-commons` | `bjca-footstone-bpring-data-commons` |
-| **version** | `3.5.14-SNAPSHOT` | `3.5.13-nes.patch.1-SNAPSHOT` |
+| **version** | `3.5.14-SNAPSHOT` | `3.5.13-nes.patch.1` |
 
 ## Parent 坐标
 
@@ -30,7 +30,7 @@
 |------|-----|
 | groupId | `cn.bjca.footstone.bpring` |
 | artifactId | `bjca-footstone-bpring-framework-bom` |
-| version | `6.2.19-nes.patch.1-SNAPSHOT` |
+| version | `6.2.19-nes.patch.1` |
 | type / scope | `pom` / `import` |
 
 ### 依赖坐标替换表（10 个）
@@ -64,6 +64,14 @@
 | **JPMS 自动模块名** | `spring.data.commons` | 避免破坏下游 `requires` 声明 |
 | **业务源码** | 与官方 3.5.13 一致 | 三个本体 CVE 官方已修复，无私有改动 |
 
+## RELEASE 发布边界
+
+- 静态预期发布集合为一个 JAR GAV：`cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:3.5.13-nes.patch.1`。
+- Maven 可能附加 sources 等分类器；完整资产集合必须在主会话串行执行本地安装后枚举。
+- 目标仓库为 `http://192.168.131.36:8088/repository/releases`。
+- 发布排除项：无。
+- 所有生成 POM 必须不含 `cn.bjca.footstone` 的 SNAPSHOT 依赖、parent、BOM 或插件版本。
+
 ## 依赖方迁移说明
 
 下游项目只需更新依赖坐标，**无需修改任何 Java 源代码**：
@@ -80,6 +88,6 @@
 <dependency>
     <groupId>cn.bjca.footstone.bpring.data</groupId>
     <artifactId>bjca-footstone-bpring-data-commons</artifactId>
-    <version>3.5.13-nes.patch.1-SNAPSHOT</version>
+    <version>3.5.13-nes.patch.1</version>
 </dependency>
 ```

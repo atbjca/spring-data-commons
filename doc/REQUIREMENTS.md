@@ -5,7 +5,7 @@
 | 项 | 值 |
 |----|-----|
 | 基线版本 | Spring Data Commons 3.5.13（官方正式版） |
-| 制品版本 | 3.5.13-nes.patch.1-SNAPSHOT |
+| 制品版本 | 3.5.13-nes.patch.1 |
 | Parent | `org.springframework.data.build:spring-data-parent:3.5.13` |
 | 构建工具 | Maven（`mvnw` 3.9.16） |
 | 编译目标 | Java 17（3.5.x 基线要求） |
@@ -42,7 +42,7 @@
 
 | 依赖 | 坐标 | 版本来源 |
 |------|------|---------|
-| fork BOM | `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom` | `6.2.19-nes.patch.1-SNAPSHOT`（import） |
+| fork BOM | `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom` | `6.2.19-nes.patch.1`（import） |
 | spring-core 等 10 个 | `cn.bjca.footstone.bpring:bjca-footstone-bpring-*` | 由 BOM 管理 |
 | spring-hateoas | `org.springframework.hateoas:spring-hateoas` | 保留官方（无对应 fork） |
 

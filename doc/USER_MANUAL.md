@@ -14,7 +14,7 @@
 
 | 维度 | 官方 3.5.13 | 本 NES fork |
 |------|------------|-------------|
-| GAV | `org.springframework.data:spring-data-commons:3.5.13` | `cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:3.5.13-nes.patch.1-SNAPSHOT` |
+| GAV | `org.springframework.data:spring-data-commons:3.5.13` | `cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:3.5.13-nes.patch.1` |
 | 上游 spring 依赖 | `org.springframework:spring-*` | `cn.bjca.footstone.bpring:bjca-footstone-bpring-*`（6.2.19-nes.patch.1，经 fork BOM） |
 | CVE-2026-41721 | ✅ 已修复（3.5.12） | ✅ 继承官方修复 |
 | CVE-2026-41716 | ✅ 已修复（3.5.12） | ✅ 继承官方修复 |
@@ -53,6 +53,16 @@ make install    # 安装到本地仓库
 make deploy     # 发布到 Nexus 私服
 ```
 
+本次 RELEASE 使用操作人批准的构建/测试复用例外：发布差异不包含生产或测试源码，
+因此不重复执行 `make build` 和 `make test`。这不豁免版本敏感的发布校验；正式
+部署前，主会话必须串行执行 `./mvnw -DskipTests install`，枚举实际发布集合，
+扫描所有生成 POM 的内部 SNAPSHOT，并运行代表性 consumer。目标 RELEASE
+仓库为 `http://192.168.131.36:8088/repository/releases`。
+
+静态结构显示本项目为单模块 JAR，预期发布 GAV 只有
+`cn.bjca.footstone.bpring.data:bjca-footstone-bpring-data-commons:3.5.13-nes.patch.1`；
+实际分类器和元数据文件必须以本地安装结果为准。本组件没有批准的发布排除项。
+
 ## 5. 私服配置
 
 `pom.xml` 的 `<distributionManagement>` 使用属性占位：
@@ -71,3 +81,6 @@ make deploy     # 发布到 Nexus 私服
 ```
 
 `${nexusReleaseUrl}` / `${nexusSnapshotUrl}` 及凭证 `releases` / `snapshots` 由 `~/.m2/settings.xml` 的 `bjca` profile（默认激活）提供。
+
+RELEASE POM 只允许引用已验证的内部 RELEASE。当前唯一声明的内部上游是
+`cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom:6.2.19-nes.patch.1`。
