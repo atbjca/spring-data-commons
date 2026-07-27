@@ -71,3 +71,39 @@ The consumer POM declares only the Data Commons RELEASE, so the Framework result
 - Tracked modifications remain limited to release metadata and component documentation.
 - `.claude/` and generated `target/` content remain excluded from release staging.
 - Central manifest state was still `prepared` when this component evidence was written; the coordinating main session owns the transition to `locally-verified` and task 3.7.
+
+## Release commit and Nexus publication
+
+The dedicated release commit is
+`370018f58948a064593f11c449ede507f44ef293`. Immediately before deployment,
+the complete target publication set was checked again and its POM and JAR were
+absent from Nexus RELEASE.
+
+The coordinator executed this incremental deployment once from the release
+commit, without `clean` and without compiling or running tests:
+
+```text
+./mvnw -DskipTests -Dmaven.test.skip=true deploy
+```
+
+It completed successfully in `23.656s`. Post-deployment verification downloaded
+the POM and main JAR from Nexus RELEASE. The remote POM declares Data Commons
+`2.7.18-nes.patch.1`, Framework `5.3.39-nes.patch.1`, and zero internal
+SNAPSHOT references.
+
+- POM URL: `http://192.168.131.36:8088/repository/releases/cn/bjca/footstone/bpring/data/bjca-footstone-bpring-data-commons/2.7.18-nes.patch.1/bjca-footstone-bpring-data-commons-2.7.18-nes.patch.1.pom`
+- POM SHA-256: `4e0115ac112e77ed29a0eaa22372287f6d18b388b2276dd38d4ecddf8774d6f1`
+- JAR URL: `http://192.168.131.36:8088/repository/releases/cn/bjca/footstone/bpring/data/bjca-footstone-bpring-data-commons/2.7.18-nes.patch.1/bjca-footstone-bpring-data-commons-2.7.18-nes.patch.1.jar`
+- JAR SHA-256: `a09ccbfc32665a33cb4f92ff82e8d101962b9bd96a180cb2e112dd741464f288`
+
+An isolated Maven consumer with snapshots disabled resolved the RELEASE-only
+graph successfully in `2.823s`. It selected Data Commons
+`2.7.18-nes.patch.1` and Framework `5.3.39-nes.patch.1`, with no internal
+SNAPSHOT.
+
+Annotated tag `v2.7.18-nes.patch.1` was created locally only after Nexus
+verification. Tag object `1f1772b735079c951c703e752475723c8b699325`
+peels exactly to the release commit. GitHub commit/tag push and remote
+verification remain pending because the known `github.com:443` connectivity
+blocker persists; Nexus must not be redeployed when the Git operation is
+retried.
