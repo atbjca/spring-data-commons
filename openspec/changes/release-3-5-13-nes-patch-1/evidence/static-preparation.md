@@ -112,3 +112,35 @@ The local publication, full installed-POM scan, and representative consumer
 gates are therefore complete. Worktree and release-only diff checks remain
 clean; the coordinating session owns the serialized central manifest transition
 and dedicated release commit.
+
+## Release commit and Nexus publication
+
+The dedicated release commit is
+`837175de73a34f0017b779ad3ae551b6906460ca`. Immediately before deployment,
+the complete target publication set was checked again and its POM and JAR were
+absent from Nexus RELEASE.
+
+The coordinator executed the incremental Maven deployment once from the
+release commit, without `clean` and without compiling or running tests. It
+completed successfully in `57.545s`.
+
+Post-deployment verification downloaded the POM and main JAR from Nexus
+RELEASE. The remote POM declares Data Commons `3.5.13-nes.patch.1`, Framework
+`6.2.19-nes.patch.1`, and zero internal SNAPSHOT references.
+
+- POM URL: `http://192.168.131.36:8088/repository/releases/cn/bjca/footstone/bpring/data/bjca-footstone-bpring-data-commons/3.5.13-nes.patch.1/bjca-footstone-bpring-data-commons-3.5.13-nes.patch.1.pom`
+- POM SHA-256: `5aa427e406eafeb8308c202b192900bef4b47b596f5fa900a01936832b8adf71`
+- JAR URL: `http://192.168.131.36:8088/repository/releases/cn/bjca/footstone/bpring/data/bjca-footstone-bpring-data-commons/3.5.13-nes.patch.1/bjca-footstone-bpring-data-commons-3.5.13-nes.patch.1.jar`
+- JAR SHA-256: `eea3f813c87f951ff142a8a26af7fbb8abc6512f4772df7442fff444ab632749`
+
+An isolated Maven consumer with snapshots disabled resolved the RELEASE-only
+graph successfully in `2.070s`. It selected Data Commons
+`3.5.13-nes.patch.1` and Framework `6.2.19-nes.patch.1`, with no internal
+SNAPSHOT.
+
+Annotated tag `v3.5.13-nes.patch.1` was created locally only after Nexus
+verification. Tag object `a7c1db159c48fecf00cb1bf8ae43ef3dfb0e137d`
+peels exactly to the release commit. GitHub commit/tag push and remote
+verification remain pending because the known `github.com:443` connectivity
+blocker persists; Nexus must not be redeployed when the Git operation is
+retried.
