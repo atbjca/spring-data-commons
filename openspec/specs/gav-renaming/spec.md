@@ -30,13 +30,11 @@ TBD - created by archiving change nes-patch-2026. Update Purpose after archive.
 
 ### Requirement: 版本号规范化
 
-本能力 MUST 满足以下要求：版本号规范化。
+本能力 MUST 满足以下要求：发布版本号遵循 `X.Y.Z-nes.patch.N` 格式，不带 `-SNAPSHOT`。
 
-版本号必须遵循 `X.Y.Z-nes.patch.N-SNAPSHOT` 格式。
-
-#### Scenario: 版本格式
+#### Scenario: RELEASE 版本格式
 - **WHEN** 检查 `pom.xml` 的 `version`
-- **THEN** 版本号为 `2.7.18-nes.patch.1-SNAPSHOT`
+- **THEN** 版本号为 `2.7.18-nes.patch.1`
 
 ### Requirement: Parent 引用处理
 
@@ -83,19 +81,18 @@ parent（`org.springframework.data.build:spring-data-parent`）MUST 采用方案
 
 ### Requirement: framework fork BOM 版本托管
 
-本能力 MUST 满足以下要求：framework fork BOM 版本托管。
+去特征化后的 Spring 组件版本 MUST 由已发布并经 Nexus 验证的 NES Framework BOM 统一托管，替代原先由 parent 传递的官方 `spring-framework-bom`。
 
-去特征化后的 Spring 组件版本 MUST 由 NES fork 的 framework BOM 统一托管，替代原先由 parent 传递的官方 `spring-framework-bom`。
-
-#### Scenario: import fork BOM
+#### Scenario: import RELEASE fork BOM
 
 - **WHEN** 检查 `pom.xml` 的 `<dependencyManagement>`
-- **THEN** 存在 import 作用域的 `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom`，版本为 `5.3.39-nes.patch.1-SNAPSHOT`
+- **THEN** 存在 import 作用域的 `cn.bjca.footstone.bpring:bjca-footstone-bpring-framework-bom`，版本为 `5.3.39-nes.patch.1`
 - **AND** 该 BOM 覆盖 parent 传递的官方 `spring-framework-bom:5.3.31`
+- **AND** 发布 POM 不包含内部 `cn.bjca.footstone` SNAPSHOT 版本
 
-#### Scenario: fork BOM 可解析且回归通过
+#### Scenario: RELEASE fork BOM 可解析且回归证据有效
 
-- **WHEN** 执行 `./mvnw clean test`
-- **THEN** 构建能从内网 Nexus 解析 fork framework BOM 及其托管组件
-- **AND** 全量测试通过（Failures 0 / Errors 0），相对官方 5.3.31 依赖无回归
+- **WHEN** 既有全量回归证据覆盖当前源码且 release-only diff 不含生产或测试源码变化
+- **THEN** 可按获准例外复用该证据，不重复执行 `make build` 或 `make test`
+- **AND** 协调主会话仍须串行执行已记录的本地 install 命令并完成 RELEASE-only consumer 验证
 
